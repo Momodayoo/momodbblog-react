@@ -1,29 +1,30 @@
-import { useUser, createUser } from "../../UserContext";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
+import { useEffect } from "react";
+import { useParams, Link, useNavigate } from "react-router-dom";
+import { useUser, getUser, deleteUser } from "../../UserContext";
 import Loader from "../../../../components/Loader";
 import Alert from "@mui/material/Alert";
+import Button from "@mui/material/Button";
 
-const UserAdd = () => {
-  const { state: {itemError, itemLoading}, dispatch } = useUser().value;
+const UserDetail = () => {
+  const navigate = useNavigate();
+  const urlParams = useParams();
+  const id = urlParams.id;
+  const {
+    state: { currentUser, itemLoading, itemError },
+    dispatch,
+  } = useUser().value;
 
-  const addUser = async (event) => {
-    event.preventDefault();
-    
-    // get form values
-    const name = event.target.name.value;
-    const email = event.target.email.value;
-    const password = event.target.password.value;
-    const avatar = event.target.avatar.files[0];
+  useEffect(() => {
+    async function fetchData() {
+      await getUser(dispatch, id);
+    }
+    fetchData();
+    console.log(import.meta.env.VITE_IMAGE_URL)
+  }, [dispatch, id]);
 
-    // create form data
-    const formData = new FormData();
-    formData.append("name", name);
-    formData.append("email", email);
-    formData.append("password", password);
-    formData.append("avatar", avatar);
-
-    await createUser(dispatch, formData);
+  const handleDelete = async () => {
+    await deleteUser(dispatch, id);
+    navigate("/users");
   };
 
   return itemLoading ? (
@@ -31,49 +32,17 @@ const UserAdd = () => {
   ) : itemError ? (
     <Alert severity="error" message={itemError} />
   ) : (
-    <form onSubmit={addUser}>
-      <TextField
-        fullWidth
-        required
-        id="name"
-        name="name"
-        label="Required"
-        placeholder="Please enter your full name"
-        margin="normal"
-      />
-      <TextField
-        fullWidth
-        required
-        id="email"
-        name="email"
-        type="email"
-        label="Required"
-        placeholder="Please enter your email address"
-        margin="normal"
-      />
-      <TextField
-        fullWidth
-        required
-        id="password"
-        name="password"
-        type="password"
-        label="Required"
-        placeholder="Please enter your password"
-        margin="normal"
-      />
-      <TextField
-        fullWidth
-        id="avatar"
-        name="avatar"
-        type="file"
-        margin="normal"
-        placeholder="Please upload your avatar"
-      />
-      <Button type="submit" variant="outlined">
-        Add user
-      </Button>
-    </form>
+    <div>
+      <img src={`${import.meta.env.VITE_IMAGE_URL}/${currentUser ? currentUser.avatar : ""}`} alt={currentUser ? currentUser.name : ""} className="user-img"/>
+      <h1>{currentUser ? currentUser.name : ""}</h1>
+      <p>{currentUser ? currentUser.email : ""}</p>
+      <Link to={`/users/${id}/edit`}>
+        <Button variant="outlined">Edit</Button>
+      </Link>
+      <Button variant="outlined" color="error" sx={{ marginLeft: 2 }} onClick={handleDelete}>Delete</Button>
+    </div>
+
   );
 };
 
-export default UserAdd;
+export default UserDetail;

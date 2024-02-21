@@ -1,58 +1,55 @@
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import Logo from '../../images/logo-color.png';
 import { styled } from "@mui/material/styles";
-import LogoDark from "../../images/logo-black.png";
-import LogoLight from "../../images/logo-white.png";
-import Link from "@mui/material/Link";
-import { NavLink } from "react-router-dom";
-import { ThemeModeContext } from "../ThemeModeContext";
-import { useContext } from "react";
+import Typography from "@mui/material/Typography";
+import Button from '@mui/material/Button';
+import { NavLink, Link as RouterLink } from "react-router-dom";
+import Link from '@mui/material/Link';
+import ThemeSwitch from '../ThemeSwitch';
 
 const LogoLink = styled(Link)({
-  display: "flex",
-  alignItems: "center",
-  textDecoration: "none",
-  color: "inherit",
+  display: 'flex',
+  alignItems: 'center',
+  textDecoration: 'none',
+  color: 'inherit',
   flexGrow: 1,
 });
 
-const LogoImg = styled("img")(() => ({
-  width: "74px",
-  height: "74px",
-  marginRight: "10px",
+const LogoImg = styled('img')(() => ({ 
+  width: 74,
+  height: 74,
+  marginRight: 10,
 
   "@media (max-width:640px)": {
-    width: "60px",
-    height: "60px" },
+    width: 100,
+    height: 28,
+  },
 }));
 
-const HeaderLink = styled(Button)({
-  marginLeft: "10px",
-  textDecoration: "none",
-  color: "inherit",
-});
+const HeaderLink = styled(Button)(({ theme }) => ({
+  marginLeft: theme.spacing(1),
+  textDecoration: 'none',
+  color: 'inherit',
+}));
 
 const Header = () => {
-  const themeMode = useContext(ThemeModeContext).themeMode;
   return (
-    <AppBar position="static" elevation={0}>
+    <AppBar position="static">
       <Toolbar>
-        <LogoLink to="/">
-          {themeMode === 'light' ? <LogoImg src={LogoDark} alt="Momo Blog App" /> : <LogoImg src={LogoLight} alt="Momo" />}
-          <Typography variant="h6" component="div" sx={{ display: { xs: 'none', sm: 'flex'}}}>
-            Momo Blog App
-          </Typography>
+        <LogoLink component={RouterLink} to="/">
+          <LogoImg src={Logo} alt="MOMO Blog" />
+          <Typography variant="h6" component="div" sx={{ display: { xs: 'none', sm: 'flex' } }}>MOMO Blog App</Typography>
         </LogoLink>
         <nav>
-          <HeaderLink to="/" component={NavLink}>Home</HeaderLink>
-          <HeaderLink to="/users" component={NavLink}>Users</HeaderLink>
-          <HeaderLink to="/blog" component={NavLink}>Blog</HeaderLink>
+          <HeaderLink component={NavLink} to="/">Home</HeaderLink>
+          <HeaderLink component={NavLink} to="/users">Users</HeaderLink>
+          <HeaderLink component={NavLink} to="/posts">Blog</HeaderLink>
         </nav>
+        <ThemeSwitch />
       </Toolbar>
     </AppBar>
   );
-};
+}
 
 export default Header;

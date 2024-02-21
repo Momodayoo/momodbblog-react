@@ -7,8 +7,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import ListItemSecondaryAction from "@mui/material/ListItemSecondaryAction";
 import Grid from '@mui/material/Grid';
 import Alert from "@mui/material/Alert";
-import Loader from "../../../components/Loader";
-import { userReducer, initialState } from "../userReducer";
+import Loader from "../../components/Loader";
+import { userReducer, initialState } from "./userReducer";
 
 const UserManager = () => {
     const [state, dispatch] = useReducer(userReducer, initialState);

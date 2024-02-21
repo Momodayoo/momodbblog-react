@@ -4,10 +4,10 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { ListItemSecondaryAction } from "@mui/material";
+import ListItemSecondaryAction from "@mui/material/ListItemSecondaryAction";
+import Grid from '@mui/material/Grid';
 import Alert from "@mui/material/Alert";
-import Grid from "@mui/material/Grid";
-import { Loader } from "../../../components/Loader";
+import Loader from "../../components/Loader";
 
 const UserManager = () => {
   const [users, setUsers] = useState([]);
@@ -16,40 +16,34 @@ const UserManager = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    setError(null);
     setLoading(true);
+    setError(null);
     fetch("http://localhost:3000/api/users")
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
+        // console.log(data);
         switch (data.result) {
           case 200:
-            console.log("200");
             setUsers(data.data);
-            setLoading(false);
             break;
           case 404:
-            console.log("404");
-            setLoading(false);
-            setError(data.message);
+            setError("Endpoint not found");
             break;
           case 500:
-            console.log("500");
             setError(data.message);
-            setLoading(false);
             break;
           default:
-            console.log("default");
-            setError(data.message);
-            setLoading(false);
+            setError("Something went wrong. Please try again later.");
             break;
         }
         // TODO: handle all the possible responses
-      })
-      .catch(() => {
+      }).catch((error) => {
+        console.error("Error fetching users", error);
         setError("Something went wrong. Please try again later.");
+      }).finally(() => {
         setLoading(false);
-      });
+      }
+    );
   }, []);
 
   const UserList = () => {
@@ -64,21 +58,30 @@ const UserManager = () => {
       if (!deleteUser) {
         return false;
       }
+      setError(null);
       const id = event.currentTarget.dataset.id;
       fetch(`http://localhost:3000/api/users/${id}`, {
         method: "DELETE",
       })
         .then((response) => response.json())
         .then((data) => {
-          console.log(data);
+          // console.log(data);
           if (data.result === 200) {
             setUsers(users.filter((user) => user.id != parseInt(id)));
           }
-        });
-    };
+        }).catch((error) => {
+          console.error("Error deleting user", error);
+          setError("Something went wrong. Please try again later.");
+        }).finally(() => {
+          // setLoading(false);
+        }
+      );
+      };
+
+
 
     return (
-      <List sx={{ width: "100%" }}>
+      <List sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
         {users.map((user) => (
           <ListItemButton
             key={user.id}
@@ -88,15 +91,10 @@ const UserManager = () => {
           >
             <ListItemText primary={user.name} secondary={user.email} />
             <ListItemSecondaryAction>
-              <IconButton
-                edge="end"
-                aria-label="delete"
-                data-id={user.id}
-                onClick={deleteUser}
-              >
+              <IconButton edge="end" aria-label="delete" data-id={user.id} onClick={deleteUser}>
                 <DeleteIcon />
               </IconButton>
-            </ListItemSecondaryAction>
+          </ListItemSecondaryAction>
           </ListItemButton>
         ))}
       </List>
@@ -105,11 +103,11 @@ const UserManager = () => {
 
   return (
     <>
-      <Grid xs={12} sm={6}>
-        {!loading ? <UserList /> : <Loader />}
-        {error && <Alert severity="error">{error}</Alert>}
+      <Grid item xs={12} sm={6}> 
+        {loading ? <Loader /> : <UserList />}
+        {error && <Alert severity="error">This is an error Alert.</Alert>}
       </Grid>
-      <Grid xs={12} sm={6}></Grid>
+      <Grid item xs={12} sm={6}></Grid>
     </>
   );
 };

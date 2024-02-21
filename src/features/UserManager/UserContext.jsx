@@ -1,6 +1,6 @@
 import { createContext, useReducer, useContext } from "react";
 import { userReducer, initialState } from "./userReducer";
-import { getUsers, deleteUser, getUser, createUser, updateUser } from "./UserAction";
+import { getUsers, deleteUser, getUser, createUser, updateUser } from "./UserActions";
 
 const UserContext = createContext();
 
