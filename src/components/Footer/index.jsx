@@ -1,9 +1,15 @@
+import { styled } from "@mui/material/styles";
+
+const PageFooter = styled("footer")(({theme}) => ({
+  color: theme.palette.text.primary,
+}));
+
 const Footer = () => {
-    return (
-      <footer>
-        <p>&copy; 2024</p>
-      </footer>
-    );
-  }
-  
-  export default Footer;
+  return (
+    <PageFooter>
+      <p>&copy; 2024 MOMO</p>
+    </PageFooter>
+  );
+}
+
+export default Footer;

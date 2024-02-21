@@ -1,8 +1,10 @@
-html, body {
+html,
+body {
   height: 100%;
 }
 
-.active {
+/* Header links */
+.active{
   opacity: 0.8;
   pointer-events: none;
 }
