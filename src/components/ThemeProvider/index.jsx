@@ -3,7 +3,7 @@ import {
     createTheme,
     responsiveFontSizes,
   } from "@mui/material/styles";
-  import { ThemeModeContext } from "../ThemeContext";
+  import { ThemeModeContext } from "../ThemeModeContext";
   import { useContext } from "react";
   
   let lightTheme = createTheme({

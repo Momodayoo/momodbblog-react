@@ -20,4 +20,3 @@ const ThemeModeProvider = ({ children }) => {
 }
 
 export { ThemeModeProvider, ThemeModeContext };
-

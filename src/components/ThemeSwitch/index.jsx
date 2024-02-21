@@ -1,18 +1,21 @@
-import { ThemeModeContext } from "../ThemeContext";
+import { ThemeModeContext } from "../ThemeModeContext";
+import IconButton from '@mui/material/IconButton';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { useContext } from "react";
 
 
 const ThemeSwitch = () => {
-  const { theme, toggleThemeMode } = useContext(ThemeModeContext);
+  const { themeMode, toggleThemeMode } = useContext(ThemeModeContext);
 
   const toggleTheme = () => {
     toggleThemeMode();
   };
 
   return (
-    <button onClick={toggleTheme}>
-      {theme === "light" ? "Switch to Dark Mode" : "Switch to Light Mode"}
-    </button>
+    <IconButton onClick={toggleTheme}>
+      {themeMode === "light" ? <Brightness4Icon />  : <Brightness7Icon /> }
+    </IconButton>
   );
 };
 

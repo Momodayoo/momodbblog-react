@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import CssBaseline from "@mui/material/CssBaseline";
-import { ThemeModeProvider } from "./components/ThemeContext";
+import { ThemeModeProvider } from "./components/ThemeModeContext/index.jsx";
 import ThemeProvider from "./components/ThemeProvider";
 import App from "./App.jsx";
 import "./index.css";

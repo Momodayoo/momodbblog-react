@@ -7,7 +7,7 @@ import LogoDark from "../../images/logo-black.png";
 import LogoLight from "../../images/logo-white.png";
 import Link from "@mui/material/Link";
 import { NavLink } from "react-router-dom";
-import { ThemeModeContext } from "../ThemeContext";
+import { ThemeModeContext } from "../ThemeModeContext";
 import { useContext } from "react";
 
 const LogoLink = styled(Link)({
@@ -22,10 +22,6 @@ const LogoImg = styled("img")(() => ({
   width: "74px",
   height: "74px",
   marginRight: "10px",
-
-  "&:hover": {
-    opacity: 0.8,
-  },
 
   "@media (max-width:640px)": {
     width: "60px",
